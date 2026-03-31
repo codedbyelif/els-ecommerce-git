@@ -1,26 +1,27 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Search, User, Heart, ShoppingBag, Menu, X } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { Search, User, Heart, ShoppingBag, Menu, X, Mail, Lock, Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 
 const navLinks = [
-  { label: "HAUTE COUTURE", href: "/haute-couture" },
-  { label: "MODA", href: "/moda" },
-  { label: "HIGH JEWELLERY", href: "/high-jewellery" },
-  { label: "FINE JEWELLERY", href: "/fine-jewellery" },
-  { label: "SAATLER", href: "/saatler" },
-  { label: "GÖZLÜKLER", href: "/gozlukler" },
+  { label: "KADIN", href: "/kadin" },
+  { label: "ERKEK", href: "/erkek" },
   { label: "PARFÜM", href: "/parfum" },
+  { label: "AYAKKABI", href: "/ayakkabi" },
+  { label: "AKSESUAR", href: "/aksesuar" },
+  { label: "ÇANTA", href: "/canta" },
   { label: "MAKYAJ", href: "/makyaj" },
-  { label: "CİLT BAKIMI", href: "/cilt-bakimi" },
-  { label: "HAKKINDA", href: "/hakkinda" },
 ];
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
+  const [loginOpen, setLoginOpen] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [authTab, setAuthTab] = useState<"login" | "register">("login");
+  const loginRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -29,6 +30,18 @@ export default function Navbar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (loginRef.current && !loginRef.current.contains(e.target as Node)) {
+        setLoginOpen(false);
+      }
+    }
+    if (loginOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [loginOpen]);
 
   return (
     <>
@@ -57,8 +70,7 @@ export default function Navbar() {
           {/* Brand Logo */}
           <Link href="/" className="group relative">
             <h1
-              className="text-[22px] md:text-[28px] lg:text-[32px] tracking-[0.35em] font-medium select-none"
-              style={{ fontFamily: "var(--font-playfair), serif" }}
+              className="text-[22px] md:text-[28px] lg:text-[32px] tracking-[0.35em] font-medium select-none font-playfair"
             >
               EL&apos;S
             </h1>
@@ -78,6 +90,7 @@ export default function Navbar() {
               />
             </button>
             <button
+              onClick={() => setLoginOpen(!loginOpen)}
               className="relative p-1.5 transition-all duration-300 hover:scale-110 group hidden sm:block"
               aria-label="Hesabım"
             >
@@ -119,7 +132,7 @@ export default function Navbar() {
 
         {/* Navigation links - desktop */}
         <nav className="hidden md:block overflow-x-auto">
-          <ul className="flex items-center justify-center gap-1 lg:gap-2 px-6 md:px-10 lg:px-16 py-3">
+          <ul className="flex items-center justify-center gap-6 lg:gap-10 px-6 md:px-10 lg:px-16 py-3">
             {navLinks.map((link) => (
               <li key={link.href}>
                 <Link
@@ -169,8 +182,7 @@ export default function Navbar() {
           {/* Mobile header */}
           <div className="flex items-center justify-between px-6 py-5 border-b border-neutral-100">
             <h2
-              className="text-[20px] tracking-[0.35em] font-medium"
-              style={{ fontFamily: "var(--font-playfair), serif" }}
+              className="text-[20px] tracking-[0.35em] font-medium font-playfair"
             >
               EL&apos;S
             </h2>
@@ -215,6 +227,258 @@ export default function Navbar() {
             <button className="p-2 transition-all duration-300 hover:scale-110" aria-label="Sepetim">
               <ShoppingBag size={20} strokeWidth={1.5} />
             </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Login Full Page Overlay */}
+      <div
+        className={`fixed inset-0 z-[60] bg-black/30 backdrop-blur-sm transition-opacity duration-400 ${
+          loginOpen
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none"
+        }`}
+        onClick={() => setLoginOpen(false)}
+      />
+
+      {/* Login Panel - slides from right */}
+      <div
+        ref={loginRef}
+        className={`fixed top-0 right-0 bottom-0 z-[70] w-full sm:w-[440px] bg-white shadow-2xl transition-transform duration-500 ease-out ${
+          loginOpen ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
+        <div className="flex flex-col h-full">
+          {/* Header */}
+          <div className="flex items-center justify-between px-8 py-6 border-b border-neutral-100">
+            <h2 className="text-[13px] tracking-[0.25em] font-medium uppercase">
+              Hesabım
+            </h2>
+            <button
+              onClick={() => setLoginOpen(false)}
+              className="p-1.5 transition-transform duration-300 hover:rotate-90"
+              aria-label="Kapat"
+            >
+              <X size={20} strokeWidth={1.5} />
+            </button>
+          </div>
+
+          {/* Tabs */}
+          <div className="flex border-b border-neutral-100">
+            <button
+              onClick={() => setAuthTab("login")}
+              className={`flex-1 py-4 text-[11px] tracking-[0.2em] uppercase font-medium transition-all duration-300 ${
+                authTab === "login"
+                  ? "text-black border-b-2 border-black"
+                  : "text-neutral-400 hover:text-neutral-600"
+              }`}
+            >
+              Giriş Yap
+            </button>
+            <button
+              onClick={() => setAuthTab("register")}
+              className={`flex-1 py-4 text-[11px] tracking-[0.2em] uppercase font-medium transition-all duration-300 ${
+                authTab === "register"
+                  ? "text-black border-b-2 border-black"
+                  : "text-neutral-400 hover:text-neutral-600"
+              }`}
+            >
+              Kayıt Ol
+            </button>
+          </div>
+
+          {/* Content */}
+          <div className="flex-1 flex flex-col px-8 md:px-14 overflow-y-auto py-8">
+            <div className="max-w-sm mx-auto w-full">
+
+              {authTab === "login" ? (
+                <>
+                  <h3 className="text-[24px] md:text-[28px] font-light font-playfair tracking-[0.04em] mb-2">
+                    Hoş Geldiniz
+                  </h3>
+                  <p className="text-[12px] text-neutral-400 font-light mb-10">
+                    EL&apos;S hesabınıza giriş yapın
+                  </p>
+
+                  <form onSubmit={(e) => e.preventDefault()} className="flex flex-col gap-5">
+                    <div>
+                      <label className="text-[10px] tracking-[0.2em] text-neutral-500 uppercase mb-2 block">
+                        E-posta
+                      </label>
+                      <div className="relative">
+                        <Mail size={16} strokeWidth={1.5} className="absolute left-0 top-1/2 -translate-y-1/2 text-neutral-300" />
+                        <input
+                          type="email"
+                          placeholder="ornek@email.com"
+                          className="w-full pl-7 pr-4 py-2.5 text-[13px] tracking-wide border-b border-neutral-200 focus:border-black outline-none transition-colors duration-300 bg-transparent"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="text-[10px] tracking-[0.2em] text-neutral-500 uppercase mb-2 block">
+                        Şifre
+                      </label>
+                      <div className="relative">
+                        <Lock size={16} strokeWidth={1.5} className="absolute left-0 top-1/2 -translate-y-1/2 text-neutral-300" />
+                        <input
+                          type={showPassword ? "text" : "password"}
+                          placeholder="••••••••"
+                          className="w-full pl-7 pr-10 py-2.5 text-[13px] tracking-wide border-b border-neutral-200 focus:border-black outline-none transition-colors duration-300 bg-transparent"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="absolute right-0 top-1/2 -translate-y-1/2 text-neutral-300 hover:text-neutral-600 transition-colors"
+                        >
+                          {showPassword ? <EyeOff size={16} strokeWidth={1.5} /> : <Eye size={16} strokeWidth={1.5} />}
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between mt-1">
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input type="checkbox" className="w-3.5 h-3.5 accent-black" />
+                        <span className="text-[11px] tracking-wide text-neutral-500">Beni hatırla</span>
+                      </label>
+                      <Link href="#" className="text-[11px] tracking-wide text-neutral-500 hover:text-black transition-colors duration-300">
+                        Şifremi unuttum
+                      </Link>
+                    </div>
+
+                    <button
+                      type="submit"
+                      className="w-full py-3 bg-black text-white text-[11px] tracking-[0.25em] uppercase font-medium hover:bg-neutral-800 transition-colors duration-300 mt-4"
+                    >
+                      Giriş Yap
+                    </button>
+                  </form>
+
+                  <div className="flex items-center gap-4 my-8">
+                    <div className="flex-1 h-[1px] bg-neutral-200" />
+                    <span className="text-[10px] tracking-[0.15em] text-neutral-400 uppercase">veya</span>
+                    <div className="flex-1 h-[1px] bg-neutral-200" />
+                  </div>
+
+                  <button className="w-full py-3 border border-neutral-200 text-[11px] tracking-[0.15em] uppercase font-medium hover:border-black hover:bg-neutral-50 transition-all duration-300">
+                    Google ile Giriş Yap
+                  </button>
+
+                  <p className="text-center text-[12px] text-neutral-400 mt-8">
+                    Hesabınız yok mu?{" "}
+                    <button onClick={() => setAuthTab("register")} className="text-black font-medium hover:underline">
+                      Kayıt Ol
+                    </button>
+                  </p>
+                </>
+              ) : (
+                <>
+                  <h3 className="text-[24px] md:text-[28px] font-light font-playfair tracking-[0.04em] mb-2">
+                    Kayıt Ol
+                  </h3>
+                  <p className="text-[12px] text-neutral-400 font-light mb-10">
+                    EL&apos;S dünyasına katılın
+                  </p>
+
+                  <form onSubmit={(e) => e.preventDefault()} className="flex flex-col gap-5">
+                    <div>
+                      <label className="text-[10px] tracking-[0.2em] text-neutral-500 uppercase mb-2 block">
+                        Ad Soyad
+                      </label>
+                      <div className="relative">
+                        <User size={16} strokeWidth={1.5} className="absolute left-0 top-1/2 -translate-y-1/2 text-neutral-300" />
+                        <input
+                          type="text"
+                          placeholder="Adınız Soyadınız"
+                          className="w-full pl-7 pr-4 py-2.5 text-[13px] tracking-wide border-b border-neutral-200 focus:border-black outline-none transition-colors duration-300 bg-transparent"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="text-[10px] tracking-[0.2em] text-neutral-500 uppercase mb-2 block">
+                        E-posta
+                      </label>
+                      <div className="relative">
+                        <Mail size={16} strokeWidth={1.5} className="absolute left-0 top-1/2 -translate-y-1/2 text-neutral-300" />
+                        <input
+                          type="email"
+                          placeholder="ornek@email.com"
+                          className="w-full pl-7 pr-4 py-2.5 text-[13px] tracking-wide border-b border-neutral-200 focus:border-black outline-none transition-colors duration-300 bg-transparent"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="text-[10px] tracking-[0.2em] text-neutral-500 uppercase mb-2 block">
+                        Şifre
+                      </label>
+                      <div className="relative">
+                        <Lock size={16} strokeWidth={1.5} className="absolute left-0 top-1/2 -translate-y-1/2 text-neutral-300" />
+                        <input
+                          type={showPassword ? "text" : "password"}
+                          placeholder="••••••••"
+                          className="w-full pl-7 pr-10 py-2.5 text-[13px] tracking-wide border-b border-neutral-200 focus:border-black outline-none transition-colors duration-300 bg-transparent"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="absolute right-0 top-1/2 -translate-y-1/2 text-neutral-300 hover:text-neutral-600 transition-colors"
+                        >
+                          {showPassword ? <EyeOff size={16} strokeWidth={1.5} /> : <Eye size={16} strokeWidth={1.5} />}
+                        </button>
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="text-[10px] tracking-[0.2em] text-neutral-500 uppercase mb-2 block">
+                        Şifre Tekrar
+                      </label>
+                      <div className="relative">
+                        <Lock size={16} strokeWidth={1.5} className="absolute left-0 top-1/2 -translate-y-1/2 text-neutral-300" />
+                        <input
+                          type={showPassword ? "text" : "password"}
+                          placeholder="••••••••"
+                          className="w-full pl-7 pr-4 py-2.5 text-[13px] tracking-wide border-b border-neutral-200 focus:border-black outline-none transition-colors duration-300 bg-transparent"
+                        />
+                      </div>
+                    </div>
+
+                    <button
+                      type="submit"
+                      className="w-full py-3 bg-black text-white text-[11px] tracking-[0.25em] uppercase font-medium hover:bg-neutral-800 transition-colors duration-300 mt-4"
+                    >
+                      Kayıt Ol
+                    </button>
+                  </form>
+
+                  <div className="flex items-center gap-4 my-8">
+                    <div className="flex-1 h-[1px] bg-neutral-200" />
+                    <span className="text-[10px] tracking-[0.15em] text-neutral-400 uppercase">veya</span>
+                    <div className="flex-1 h-[1px] bg-neutral-200" />
+                  </div>
+
+                  <button className="w-full py-3 border border-neutral-200 text-[11px] tracking-[0.15em] uppercase font-medium hover:border-black hover:bg-neutral-50 transition-all duration-300">
+                    Google ile Kayıt Ol
+                  </button>
+
+                  <p className="text-center text-[12px] text-neutral-400 mt-8">
+                    Zaten hesabınız var mı?{" "}
+                    <button onClick={() => setAuthTab("login")} className="text-black font-medium hover:underline">
+                      Giriş Yap
+                    </button>
+                  </p>
+                </>
+              )}
+
+            </div>
+          </div>
+
+          {/* Bottom */}
+          <div className="px-8 py-6 border-t border-neutral-100 text-center">
+            <p className="text-[10px] tracking-[0.1em] text-neutral-400">
+              Giriş yaparak <Link href="#" className="underline hover:text-black transition-colors">kullanım koşullarını</Link> kabul etmiş olursunuz.
+            </p>
           </div>
         </div>
       </div>
