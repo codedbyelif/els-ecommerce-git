@@ -10,12 +10,13 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-playfair: var(--font-playfair), serif;
+  --font-poppins: var(--font-poppins), Arial, Helvetica, sans-serif;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-inter), Arial, Helvetica, sans-serif;
 }
 
 /* Mobile menu slide-in animation */
@@ -26,6 +27,25 @@ body {
   }
   to {
     opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Marquee animations */
+@keyframes marqueeLeft {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes marqueeRight {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
     transform: translateX(0);
   }
 }
