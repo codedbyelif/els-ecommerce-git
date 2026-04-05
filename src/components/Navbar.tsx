@@ -640,6 +640,14 @@ export default function Navbar() {
                     </button>
                   </form>
 
+                  <p className="text-[11px] text-neutral-400 font-light mt-4 leading-relaxed">
+                    Giriş yaparak{" "}
+                    <Link href="/kullanim-kosullari" onClick={() => setLoginOpen(false)} className="underline underline-offset-2 hover:text-neutral-700 transition-colors">
+                      kullanım koşullarını
+                    </Link>{" "}
+                    kabul etmiş olursunuz.
+                  </p>
+
                   <div className="flex items-center gap-4 my-8">
                     <div className="flex-1 h-[1px] bg-neutral-200" />
                     <span className="text-[10px] tracking-[0.15em] text-neutral-400 uppercase">veya</span>
@@ -754,6 +762,14 @@ export default function Navbar() {
                       Kayıt Ol
                     </button>
                   </form>
+
+                  <p className="text-[11px] text-neutral-400 font-light mt-4 leading-relaxed">
+                    Kayıt olarak{" "}
+                    <Link href="/kullanim-kosullari" onClick={() => setLoginOpen(false)} className="underline underline-offset-2 hover:text-neutral-700 transition-colors">
+                      kullanım koşullarını
+                    </Link>{" "}
+                    kabul etmiş olursunuz.
+                  </p>
 
                   <div className="flex items-center gap-4 my-8">
                     <div className="flex-1 h-[1px] bg-neutral-200" />
