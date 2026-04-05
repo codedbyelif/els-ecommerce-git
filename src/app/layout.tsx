@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Poppins, Playfair_Display } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import { FavoritesProvider } from "@/context/FavoritesContext";
+import { CartProvider } from "@/context/CartContext";
+import SiteShell from "@/components/SiteShell";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -33,9 +34,11 @@ export default function RootLayout({
       className={`${poppins.variable} ${playfair.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-poppins">
-        <Navbar />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <CartProvider>
+          <FavoritesProvider>
+            <SiteShell>{children}</SiteShell>
+          </FavoritesProvider>
+        </CartProvider>
       </body>
     </html>
   );
