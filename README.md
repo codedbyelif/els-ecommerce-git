@@ -35,6 +35,9 @@ Built entirely from scratch as a personal project, EL'S combines modern web tech
 ### Admin Panel — Dashboard
 ![Admin Dashboard](screenshots/admin-dashboard.png)
 
+### Database Schema (Supabase)
+![Database](screenshots/database.png)
+
 ---
 
 ## Overview
@@ -297,6 +300,9 @@ All rights reserved © 2026 EL'S. See [LICENSE](LICENSE) for details.
 
 ### Yönetim Paneli — Dashboard
 ![Admin Dashboard](screenshots/admin-dashboard.png)
+
+### Veritabanı Şeması (Supabase)
+![Veritabanı](screenshots/database.png)
 
 ---
 
