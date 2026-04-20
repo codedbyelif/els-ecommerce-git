@@ -98,19 +98,19 @@ export default function ProductListing({ mainCategory, subCategory, subCategoryS
              </div>
           </div>
           
-          <div className="flex items-end justify-between">
+          <div className="flex items-end justify-between gap-4">
             <div>
-              <h1 className="text-[28px] md:text-[36px] font-light font-playfair tracking-[0.04em] text-neutral-900 mt-2">
+              <h1 className="text-[24px] md:text-[36px] font-light font-playfair tracking-[0.04em] text-neutral-900 mt-2">
                 {displayTitle}
               </h1>
               <p className="text-[12px] text-neutral-400 mt-1">
                 {loading ? "Yükleniyor..." : `${sortedProducts.length} ürün`}
               </p>
             </div>
-            
-            <div className="hidden md:flex items-center gap-2">
-              <span className="text-[11px] tracking-[0.15em] text-neutral-400 uppercase">Sırala</span>
-              <select 
+
+            <div className="flex items-center gap-2">
+              <span className="text-[11px] tracking-[0.15em] text-neutral-400 uppercase hidden sm:block">Sırala</span>
+              <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
                 className="text-[11px] tracking-[0.1em] border-b border-neutral-200 py-1 px-2 bg-transparent outline-none cursor-pointer text-neutral-700 font-medium"

@@ -1,6 +1,8 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { supabase } from "@/lib/supabase";
+import { useAuthPrompt } from "@/context/AuthPromptContext";
 
 export interface CartItem {
   id: string;
@@ -29,6 +31,18 @@ const CartContext = createContext<CartContextType | null>(null);
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
   const [cartOpen, setCartOpen] = useState(false);
+  const [user, setUser] = useState<any>(null);
+  const { openLoginPrompt } = useAuthPrompt();
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+    });
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
 
   useEffect(() => {
     const stored = localStorage.getItem("els-cart");
@@ -40,6 +54,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, [items]);
 
   const addItem = (product: Omit<CartItem, "quantity">) => {
+    if (!user) {
+      openLoginPrompt("Sepete eklemek için giriş yapmanız gerekiyor.");
+      return;
+    }
     setItems(prev => {
       const existing = prev.find(i => i.id === product.id && i.size === product.size);
       if (existing) {

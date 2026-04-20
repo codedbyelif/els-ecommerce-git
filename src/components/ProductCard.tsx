@@ -40,7 +40,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           e.stopPropagation();
           toggleFavorite(product.id);
         }}
-        className="absolute top-3 right-3 z-20 p-2 bg-white/80 backdrop-blur-sm rounded-full shadow-sm transition-all duration-300 hover:scale-110 active:scale-95 group-hover:opacity-100 sm:opacity-0"
+        className="absolute top-3 right-3 z-20 p-2 bg-white/80 backdrop-blur-sm rounded-full shadow-sm transition-all duration-300 hover:scale-110 active:scale-95 opacity-100 sm:opacity-0 sm:group-hover:opacity-100"
         aria-label={isFav ? "Favorilerden Çıkar" : "Favorilere Ekle"}
       >
         <Heart

@@ -164,7 +164,7 @@ export default function Home() {
       {/* ── STATEMENT ── */}
       <section className="py-24 md:py-32 px-6 bg-white text-center">
         <p className="text-[10px] tracking-[0.5em] text-neutral-300 uppercase mb-6">EL&apos;S — Manifesto</p>
-        <blockquote className="text-[22px] md:text-[32px] lg:text-[40px] font-light font-playfair tracking-[0.03em] text-neutral-900 max-w-4xl mx-auto leading-relaxed">
+        <blockquote className="text-[18px] md:text-[28px] lg:text-[36px] font-light font-playfair tracking-[0.03em] text-neutral-900 max-w-4xl mx-auto leading-relaxed px-4">
           &ldquo;Moda geçer, stil kalır.&rdquo;
         </blockquote>
         <div className="w-12 h-[1px] bg-neutral-200 mx-auto mt-10" />
@@ -202,7 +202,7 @@ export default function Home() {
       </section>
 
       {/* ── FULL BANNER ── */}
-      <section className="relative h-[55vh] md:h-[70vh] overflow-hidden">
+      <section className="relative h-[50vh] md:h-[70vh] overflow-hidden">
         <Image
           src="/kadin-bluz-1.jpg"
           alt="EL'S Koleksiyon"
@@ -210,9 +210,9 @@ export default function Home() {
           className="object-cover object-top"
         />
         <div className="absolute inset-0 bg-black/40" />
-        <div className="absolute inset-0 flex flex-col items-start justify-center px-10 md:px-20 lg:px-32 text-white max-w-2xl">
+        <div className="absolute inset-0 flex flex-col items-start justify-center px-6 md:px-20 lg:px-32 text-white max-w-2xl">
           <p className="text-[9px] tracking-[0.5em] text-white/50 uppercase mb-5">Yeni Koleksiyon</p>
-          <h2 className="text-[28px] md:text-[44px] font-light font-playfair tracking-[0.04em] leading-tight mb-6">
+          <h2 className="text-[22px] md:text-[40px] font-light font-playfair tracking-[0.04em] leading-tight mb-6">
             Kadın Bluz<br />& Gömlek
           </h2>
           <Link
@@ -226,18 +226,18 @@ export default function Home() {
       </section>
 
       {/* ── MARQUEE ── */}
-      <section className="py-20 bg-neutral-50 overflow-hidden border-y border-neutral-100">
+      <section className="py-10 md:py-20 bg-neutral-50 overflow-hidden border-y border-neutral-100">
         <div className="flex flex-col gap-4">
           <div className="flex animate-[marqueeLeft_35s_linear_infinite] whitespace-nowrap">
             {[...Array(5)].map((_, i) => (
               <span key={i} className="flex items-center gap-10 mx-10">
-                <span className="text-[44px] md:text-[64px] font-light font-playfair text-neutral-800">Zarafet</span>
+                <span className="text-[28px] md:text-[44px] lg:text-[64px] font-light font-playfair text-neutral-800">Zarafet</span>
                 <span className="text-neutral-300 text-xl">◆</span>
-                <span className="text-[44px] md:text-[64px] font-light font-playfair italic text-neutral-300">Tutku</span>
+                <span className="text-[28px] md:text-[44px] lg:text-[64px] font-light font-playfair italic text-neutral-300">Tutku</span>
                 <span className="text-neutral-300 text-xl">◆</span>
-                <span className="text-[44px] md:text-[64px] font-light font-playfair text-neutral-800">Lüks</span>
+                <span className="text-[28px] md:text-[44px] lg:text-[64px] font-light font-playfair text-neutral-800">Lüks</span>
                 <span className="text-neutral-300 text-xl">◆</span>
-                <span className="text-[44px] md:text-[64px] font-light font-playfair italic text-neutral-300">EL&apos;S</span>
+                <span className="text-[28px] md:text-[44px] lg:text-[64px] font-light font-playfair italic text-neutral-300">EL&apos;S</span>
                 <span className="text-neutral-300 text-xl">◆</span>
               </span>
             ))}
@@ -245,13 +245,13 @@ export default function Home() {
           <div className="flex animate-[marqueeRight_28s_linear_infinite] whitespace-nowrap">
             {[...Array(5)].map((_, i) => (
               <span key={i} className="flex items-center gap-10 mx-10">
-                <span className="text-[44px] md:text-[64px] font-light font-playfair italic text-neutral-300">Moda</span>
+                <span className="text-[28px] md:text-[44px] lg:text-[64px] font-light font-playfair italic text-neutral-300">Moda</span>
                 <span className="text-neutral-300 text-xl">◆</span>
-                <span className="text-[44px] md:text-[64px] font-light font-playfair text-neutral-800">Cesaret</span>
+                <span className="text-[28px] md:text-[44px] lg:text-[64px] font-light font-playfair text-neutral-800">Cesaret</span>
                 <span className="text-neutral-300 text-xl">◆</span>
-                <span className="text-[44px] md:text-[64px] font-light font-playfair italic text-neutral-300">Stil</span>
+                <span className="text-[28px] md:text-[44px] lg:text-[64px] font-light font-playfair italic text-neutral-300">Stil</span>
                 <span className="text-neutral-300 text-xl">◆</span>
-                <span className="text-[44px] md:text-[64px] font-light font-playfair text-neutral-800">EL&apos;S</span>
+                <span className="text-[28px] md:text-[44px] lg:text-[64px] font-light font-playfair text-neutral-800">EL&apos;S</span>
                 <span className="text-neutral-300 text-xl">◆</span>
               </span>
             ))}
@@ -267,12 +267,12 @@ export default function Home() {
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           referrerPolicy="strict-origin-when-cross-origin"
           allowFullScreen
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300%] h-[300%] border-0 pointer-events-none"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[177.78vh] min-w-full h-[56.25vw] min-h-full border-0 pointer-events-none"
         />
         <div className="absolute inset-0 bg-black/50" />
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white px-6">
           <p className="text-[9px] tracking-[0.6em] text-white/40 uppercase mb-8">İlkbahar / Yaz 2026</p>
-          <h2 className="text-[36px] md:text-[58px] lg:text-[72px] font-light font-playfair tracking-[0.04em] leading-tight mb-8 min-h-[1.2em]">
+          <h2 className="text-[26px] md:text-[48px] lg:text-[64px] font-light font-playfair tracking-[0.04em] leading-tight mb-8 min-h-[1.2em]">
             {twText}
             <span className="animate-pulse">|</span>
           </h2>

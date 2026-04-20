@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { useFavorites } from "@/context/FavoritesContext";
 import { useCart } from "@/context/CartContext";
+import { useAuthPrompt } from "@/context/AuthPromptContext";
 
 const navLinks = [
   {
@@ -125,6 +126,15 @@ export default function Navbar() {
 
   const { favoritesCount } = useFavorites();
   const { items, totalCount, totalPrice, removeItem, updateQuantity, cartOpen, setCartOpen } = useCart();
+  const { promptMessage, clearPrompt } = useAuthPrompt();
+
+  useEffect(() => {
+    if (!promptMessage) return;
+    setAuthTab("register");
+    setLoginOpen(true);
+    const t = setTimeout(() => clearPrompt(), 3500);
+    return () => clearTimeout(t);
+  }, [promptMessage, clearPrompt]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -199,6 +209,7 @@ export default function Navbar() {
     function handleClickOutside(e: MouseEvent) {
       if (loginRef.current && !loginRef.current.contains(e.target as Node)) {
         setLoginOpen(false);
+        clearPrompt();
       }
     }
     if (loginOpen) {
@@ -209,6 +220,20 @@ export default function Navbar() {
 
   return (
     <>
+      {/* Auth Toast */}
+      <div
+        className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] transition-all duration-400 ease-out ${
+          promptMessage
+            ? "opacity-100 translate-y-0 pointer-events-auto"
+            : "opacity-0 translate-y-3 pointer-events-none"
+        }`}
+      >
+        <div className="flex items-center gap-3 bg-neutral-900 text-white px-5 py-3.5 shadow-xl">
+          <User size={15} strokeWidth={1.5} className="text-white/60 shrink-0" />
+          <p className="text-[11px] tracking-[0.15em] whitespace-nowrap">{promptMessage}</p>
+        </div>
+      </div>
+
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out overflow-hidden ${scrolled
             ? "bg-white/95 backdrop-blur-md shadow-[0_1px_0_rgba(0,0,0,0.06)]"
@@ -241,22 +266,20 @@ export default function Navbar() {
           </Link>
 
           {/* Utility Icons - right */}
-          <div className="absolute right-6 md:right-10 lg:right-16 flex items-center gap-4 md:gap-5">
+          <div className="absolute right-6 md:right-10 lg:right-16 flex items-center gap-3 md:gap-5">
             <button
               onClick={() => setSearchOpen(true)}
               className="relative p-1.5 transition-all duration-300 hover:scale-110 group"
               aria-label="Ara"
             >
-              <Search
-                size={19}
-                strokeWidth={1.5}
-                className="transition-colors duration-300 group-hover:text-neutral-500"
-              />
+              <Search size={19} strokeWidth={1.5} className="transition-colors duration-300 group-hover:text-neutral-500" />
             </button>
-            <div className="relative group/auth">
+
+            {/* User — sadece desktop */}
+            <div className="relative group/auth hidden md:block">
               <button
                 onClick={() => user ? handleLogout() : setLoginOpen(true)}
-                className="relative p-1.5 transition-all duration-300 hover:scale-110 group hidden sm:flex items-center gap-2"
+                className="relative p-1.5 transition-all duration-300 hover:scale-110 group flex items-center gap-2"
                 aria-label="Hesabım"
               >
                 {user ? (
@@ -264,47 +287,35 @@ export default function Navbar() {
                     <span className="text-[10px] tracking-wider text-neutral-600 hidden lg:block">
                       {user.user_metadata?.full_name || user.email}
                     </span>
-                    <LogOut
-                      size={19}
-                      strokeWidth={1.5}
-                      className="transition-colors duration-300 group-hover:text-red-500"
-                    />
+                    <LogOut size={19} strokeWidth={1.5} className="transition-colors duration-300 group-hover:text-red-500" />
                   </>
                 ) : (
-                  <User
-                    size={19}
-                    strokeWidth={1.5}
-                    className="transition-colors duration-300 group-hover:text-neutral-500"
-                  />
+                  <User size={19} strokeWidth={1.5} className="transition-colors duration-300 group-hover:text-neutral-500" />
                 )}
               </button>
             </div>
+
+            {/* Favorites — sadece desktop */}
             <Link
               href="/favorilerim"
-              className="relative p-1.5 transition-all duration-300 hover:scale-110 group hidden sm:block"
+              className="relative p-1.5 transition-all duration-300 hover:scale-110 group hidden md:block"
               aria-label="Favorilerim"
             >
-              <Heart
-                size={19}
-                strokeWidth={1.5}
-                className="transition-colors duration-300 group-hover:text-neutral-500"
-              />
+              <Heart size={19} strokeWidth={1.5} className="transition-colors duration-300 group-hover:text-neutral-500" />
               {favoritesCount > 0 && (
                 <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-black text-white text-[9px] font-medium rounded-full flex items-center justify-center animate-in zoom-in-0 duration-300 font-sans">
                   {favoritesCount}
                 </span>
               )}
             </Link>
+
+            {/* Cart — her zaman */}
             <button
               onClick={() => setCartOpen(true)}
               className="relative p-1.5 transition-all duration-300 hover:scale-110 group"
               aria-label="Sepetim"
             >
-              <ShoppingBag
-                size={19}
-                strokeWidth={1.5}
-                className="transition-colors duration-300 group-hover:text-neutral-500"
-              />
+              <ShoppingBag size={19} strokeWidth={1.5} className="transition-colors duration-300 group-hover:text-neutral-500" />
               {totalCount > 0 && (
                 <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-black text-white text-[9px] font-medium rounded-full flex items-center justify-center font-sans">
                   {totalCount}
@@ -495,14 +506,37 @@ export default function Navbar() {
 
           {/* Mobile bottom icons */}
           <div className="px-8 py-6 border-t border-neutral-100 flex items-center gap-6">
-            <button className="p-2 transition-all duration-300 hover:scale-110" aria-label="Hesabım">
-              <User size={20} strokeWidth={1.5} />
+            <button
+              onClick={() => { setMobileMenuOpen(false); user ? handleLogout() : setLoginOpen(true); }}
+              className="p-2 transition-all duration-300 hover:scale-110"
+              aria-label="Hesabım"
+            >
+              {user ? <LogOut size={20} strokeWidth={1.5} /> : <User size={20} strokeWidth={1.5} />}
             </button>
-            <button className="p-2 transition-all duration-300 hover:scale-110" aria-label="Favorilerim">
+            <Link
+              href="/favorilerim"
+              onClick={() => setMobileMenuOpen(false)}
+              className="relative p-2 transition-all duration-300 hover:scale-110"
+              aria-label="Favorilerim"
+            >
               <Heart size={20} strokeWidth={1.5} />
-            </button>
-            <button className="p-2 transition-all duration-300 hover:scale-110" aria-label="Sepetim">
+              {favoritesCount > 0 && (
+                <span className="absolute -top-0.5 right-0 w-4 h-4 bg-black text-white text-[9px] font-medium rounded-full flex items-center justify-center font-sans">
+                  {favoritesCount}
+                </span>
+              )}
+            </Link>
+            <button
+              onClick={() => { setMobileMenuOpen(false); setCartOpen(true); }}
+              className="relative p-2 transition-all duration-300 hover:scale-110"
+              aria-label="Sepetim"
+            >
               <ShoppingBag size={20} strokeWidth={1.5} />
+              {totalCount > 0 && (
+                <span className="absolute -top-0.5 right-0 w-4 h-4 bg-black text-white text-[9px] font-medium rounded-full flex items-center justify-center font-sans">
+                  {totalCount}
+                </span>
+              )}
             </button>
           </div>
         </div>
@@ -514,23 +548,21 @@ export default function Navbar() {
             ? "opacity-100 pointer-events-auto"
             : "opacity-0 pointer-events-none"
           }`}
-        onClick={() => setLoginOpen(false)}
+        onClick={() => { setLoginOpen(false); clearPrompt(); }}
       />
 
       {/* Login Panel - slides from right */}
       <div
         ref={loginRef}
-        className={`fixed top-0 right-0 bottom-0 z-[70] w-full sm:w-[440px] bg-white shadow-2xl transition-transform duration-500 ease-out ${loginOpen ? "translate-x-0" : "translate-x-full"
+        className={`fixed top-0 right-0 bottom-0 z-[70] w-full xs:w-[90%] sm:w-[440px] bg-white shadow-2xl transition-transform duration-500 ease-out ${loginOpen ? "translate-x-0" : "translate-x-full"
           }`}
       >
         <div className="flex flex-col h-full">
           {/* Header */}
           <div className="flex items-center justify-between px-8 py-6 border-b border-neutral-100">
-            <h2 className="text-[13px] tracking-[0.25em] font-medium uppercase">
-              Hesabım
-            </h2>
+            <h2 className="text-[13px] tracking-[0.25em] font-medium uppercase">Hesabım</h2>
             <button
-              onClick={() => setLoginOpen(false)}
+              onClick={() => { setLoginOpen(false); clearPrompt(); }}
               className="p-1.5 transition-transform duration-300 hover:rotate-90"
               aria-label="Kapat"
             >
@@ -561,7 +593,7 @@ export default function Navbar() {
           </div>
 
           {/* Content */}
-          <div className="flex-1 flex flex-col px-8 md:px-14 overflow-y-auto py-8">
+          <div className="flex-1 flex flex-col px-6 sm:px-8 md:px-14 overflow-y-auto py-8">
             <div className="max-w-sm mx-auto w-full">
 
               {authTab === "login" ? (
@@ -809,7 +841,7 @@ export default function Navbar() {
       />
 
       {/* Cart Panel */}
-      <div className={`fixed top-0 right-0 bottom-0 z-[70] w-full sm:w-[440px] bg-white shadow-2xl transition-transform duration-500 ease-out ${cartOpen ? "translate-x-0" : "translate-x-full"}`}>
+      <div className={`fixed top-0 right-0 bottom-0 z-[70] w-full xs:w-[90%] sm:w-[440px] bg-white shadow-2xl transition-transform duration-500 ease-out ${cartOpen ? "translate-x-0" : "translate-x-full"}`}>
         <div className="flex flex-col h-full">
           {/* Header */}
           <div className="flex items-center justify-between px-8 py-6 border-b border-neutral-100">

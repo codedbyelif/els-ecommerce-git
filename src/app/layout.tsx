@@ -3,6 +3,7 @@ import { Poppins, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { FavoritesProvider } from "@/context/FavoritesContext";
 import { CartProvider } from "@/context/CartContext";
+import { AuthPromptProvider } from "@/context/AuthPromptContext";
 import SiteShell from "@/components/SiteShell";
 
 const poppins = Poppins({
@@ -34,11 +35,13 @@ export default function RootLayout({
       className={`${poppins.variable} ${playfair.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-poppins">
-        <CartProvider>
-          <FavoritesProvider>
-            <SiteShell>{children}</SiteShell>
-          </FavoritesProvider>
-        </CartProvider>
+        <AuthPromptProvider>
+          <CartProvider>
+            <FavoritesProvider>
+              <SiteShell>{children}</SiteShell>
+            </FavoritesProvider>
+          </CartProvider>
+        </AuthPromptProvider>
       </body>
     </html>
   );

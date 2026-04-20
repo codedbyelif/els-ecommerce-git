@@ -146,7 +146,8 @@ export default function ProductDetailView({ product, mainCategory }: { product: 
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
             {/* Left: Images */}
-            <div className="flex gap-4">
+            <div className="flex flex-col md:flex-row gap-3 md:gap-4">
+              {/* Desktop side thumbnails */}
               {images.length > 1 && (
                 <div className="hidden md:flex flex-col gap-3 w-[70px] flex-shrink-0">
                   {images.map((img, i) => (
@@ -162,6 +163,7 @@ export default function ProductDetailView({ product, mainCategory }: { product: 
                   ))}
                 </div>
               )}
+              {/* Main image */}
               <div className="relative flex-1 aspect-[3/4] overflow-hidden bg-neutral-50">
                 <Image
                   src={images[selectedImage]}
@@ -171,6 +173,22 @@ export default function ProductDetailView({ product, mainCategory }: { product: 
                   priority
                 />
               </div>
+              {/* Mobile bottom thumbnails */}
+              {images.length > 1 && (
+                <div className="flex gap-2 overflow-x-auto pb-1 md:hidden">
+                  {images.map((img, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setSelectedImage(i)}
+                      className={`relative w-16 aspect-[3/4] flex-shrink-0 overflow-hidden border-2 transition-all duration-200 ${
+                        selectedImage === i ? "border-black" : "border-transparent hover:border-neutral-300"
+                      }`}
+                    >
+                      <Image src={img} alt="" fill className="object-cover object-top" />
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Right: Info */}

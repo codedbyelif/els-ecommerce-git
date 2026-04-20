@@ -11,14 +11,14 @@ export default function Footer() {
     <footer className="bg-neutral-950 text-white">
 
       {/* Newsletter + Logo band */}
-      <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 py-20 md:py-28 grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24 items-center">
+      <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 py-14 md:py-24 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-24 items-center">
         {/* Left: big logo */}
         <div>
           <p className="text-[9px] tracking-[0.6em] text-neutral-600 uppercase mb-6">
             Paris · Milano · İstanbul
           </p>
           <Link href="/">
-            <span className="text-[64px] md:text-[80px] lg:text-[100px] font-light font-playfair tracking-[0.12em] text-white leading-none hover:text-neutral-300 transition-colors duration-500">
+            <span className="text-[48px] md:text-[64px] lg:text-[80px] font-light font-playfair tracking-[0.12em] text-white leading-none hover:text-neutral-300 transition-colors duration-500">
               EL&apos;S
             </span>
           </Link>

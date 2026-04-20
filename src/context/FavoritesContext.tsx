@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { supabase } from "@/lib/supabase";
+import { useAuthPrompt } from "@/context/AuthPromptContext";
 
 interface FavoritesContextType {
   favorites: string[];
@@ -17,6 +18,7 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
   const [favorites, setFavorites] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<any>(null);
+  const { openLoginPrompt } = useAuthPrompt();
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -56,7 +58,7 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
 
   const toggleFavorite = async (productId: string) => {
     if (!user) {
-      alert("Favorilere eklemek için lütfen giriş yapın.");
+      openLoginPrompt("Favorilere eklemek için giriş yapmanız gerekiyor.");
       return;
     }
 
