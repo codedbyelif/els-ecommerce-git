@@ -680,16 +680,6 @@ export default function Navbar() {
                     kabul etmiş olursunuz.
                   </p>
 
-                  <div className="flex items-center gap-4 my-8">
-                    <div className="flex-1 h-[1px] bg-neutral-200" />
-                    <span className="text-[10px] tracking-[0.15em] text-neutral-400 uppercase">veya</span>
-                    <div className="flex-1 h-[1px] bg-neutral-200" />
-                  </div>
-
-                  <button className="w-full py-3 border border-neutral-200 text-[11px] tracking-[0.15em] uppercase font-medium hover:border-black hover:bg-neutral-50 transition-all duration-300">
-                    Google ile Giriş Yap
-                  </button>
-
                   <p className="text-center text-[12px] text-neutral-400 mt-8">
                     Hesabınız yok mu?{" "}
                     <button onClick={() => setAuthTab("register")} className="text-black font-medium hover:underline">
@@ -802,16 +792,6 @@ export default function Navbar() {
                     </Link>{" "}
                     kabul etmiş olursunuz.
                   </p>
-
-                  <div className="flex items-center gap-4 my-8">
-                    <div className="flex-1 h-[1px] bg-neutral-200" />
-                    <span className="text-[10px] tracking-[0.15em] text-neutral-400 uppercase">veya</span>
-                    <div className="flex-1 h-[1px] bg-neutral-200" />
-                  </div>
-
-                  <button className="w-full py-3 border border-neutral-200 text-[11px] tracking-[0.15em] uppercase font-medium hover:border-black hover:bg-neutral-50 transition-all duration-300">
-                    Google ile Kayıt Ol
-                  </button>
 
                   <p className="text-center text-[12px] text-neutral-400 mt-8">
                     Zaten hesabınız var mı?{" "}
